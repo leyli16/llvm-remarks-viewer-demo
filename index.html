@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLVM Remarks Viewer</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .charts {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .chart-container {
+            flex: 1;
+            padding: 15px;
+            border: 1px solid #eee;
+            border-radius: 8px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f5f5f5;
+        }
+        .missing-info {
+            color: #999;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <h1>LLVM Remarks Viewer</h1>
+    
+    <div class="charts">
+        <div class="chart-container">
+            <canvas id="instructionChart"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="stackChart"></canvas>
+        </div>
+    </div>
+
+    <h2>All Remarks</h2>
+    <table id="remarksTable">
+        <thead>
+            <tr>
+                <th>Function</th>
+                <th>Pass</th>
+                <th>Name</th>
+                <th>Message</th>
+                <th>File</th>
+                <th>Line</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <script>
+        // Helper function to demangle C++ function names (basic version)
+        function demangleName(name) {
+            if (name.startsWith('_Z')) {
+                // Remove _Z prefix and try to make it more readable
+                return name.replace('_Z', '').replace(/\d+/g, '');
+            }
+            return name;
+        }
+
+        // Function to extract instruction count per function
+        function getInstructionCounts(remarks) {
+            const counts = {};
+            remarks.forEach(remark => {
+                if (remark.Name === 'InstructionCount') {
+                    counts[remark.Function] = parseInt(remark.Message.match(/\d+/)[0]);
+                }
+            });
+            return counts;
+        }
+
+        // Function to extract stack size per function
+        function getStackSizes(remarks) {
+            const sizes = {};
+            remarks.forEach(remark => {
+                if (remark.Name === 'StackSize') {
+                    sizes[remark.Function] = parseInt(remark.Message.match(/\d+/)[0]);
+                }
+            });
+            return sizes;
+        }
+
+        // Function to create a bar chart
+        function createChart(ctx, data, label) {
+            return new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(data).map(demangleName),
+                    datasets: [{
+                        label: label,
+                        data: Object.values(data),
+                        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        // Function to populate the table
+        function populateTable(remarks) {
+            const tbody = document.querySelector('#remarksTable tbody');
+            remarks.forEach(remark => {
+                const row = document.createElement('tr');
+                if (!remark.File || !remark.Line) {
+                    row.className = 'missing-info';
+                }
+                
+                row.innerHTML = `
+                    <td>${demangleName(remark.Function)}</td>
+                    <td>${remark.Pass}</td>
+                    <td>${remark.Name}</td>
+                    <td>${remark.Message}</td>
+                    <td>${remark.File || '-'}</td>
+                    <td>${remark.Line || '-'}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // Main function to initialize the visualization
+        async function initVisualization() {
+            try {
+                const response = await fetch('demo_remarks.json');
+                const data = await response.json();
+                const remarks = data.remarks;
+
+                // Create instruction count chart
+                const instructionCounts = getInstructionCounts(remarks);
+                const instructionCtx = document.getElementById('instructionChart').getContext('2d');
+                createChart(instructionCtx, instructionCounts, 'Instruction Count');
+
+                // Create stack size chart
+                const stackSizes = getStackSizes(remarks);
+                const stackCtx = document.getElementById('stackChart').getContext('2d');
+                createChart(stackCtx, stackSizes, 'Stack Size (bytes)');
+
+                // Populate the table
+                populateTable(remarks);
+            } catch (error) {
+                console.error('Error loading remarks:', error);
+            }
+        }
+
+        // Initialize when the page loads
+        window.addEventListener('load', initVisualization);
+    </script>
+</body>
+</html> 
