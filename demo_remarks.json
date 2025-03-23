@@ -1,0 +1,52 @@
+{
+  "remarks": [
+    {
+      "Pass": "prologepilog",
+      "Name": "StackSize",
+      "Function": "_Z6squarei",
+      "Message": "Function '_Z6squarei' uses 16 stack bytes",
+      "File": "example.cpp",
+      "Line": 1
+    },
+    {
+      "Pass": "asm-printer",
+      "Name": "InstructionMix",
+      "Function": "_Z6squarei",
+      "Message": "Basic block contains 7 instructions",
+      "File": null,
+      "Line": null
+    },
+    {
+      "Pass": "asm-printer",
+      "Name": "InstructionCount",
+      "Function": "_Z6squarei",
+      "Message": "Function contains 7 instructions",
+      "File": "example.cpp",
+      "Line": 1
+    },
+    {
+      "Pass": "prologepilog",
+      "Name": "StackSize",
+      "Function": "main",
+      "Message": "Function 'main' uses 32 stack bytes",
+      "File": "example.cpp",
+      "Line": 5
+    },
+    {
+      "Pass": "asm-printer",
+      "Name": "InstructionMix",
+      "Function": "main",
+      "Message": "Basic block contains 14 instructions",
+      "File": null,
+      "Line": null
+    },
+    {
+      "Pass": "asm-printer",
+      "Name": "InstructionCount",
+      "Function": "main",
+      "Message": "Function contains 14 instructions",
+      "File": "example.cpp",
+      "Line": 5
+    }
+  ]
+}
