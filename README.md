@@ -5,7 +5,7 @@ This is a lightweight demo that **parses and visualizes LLVM optimization remark
 
 ---
 
-## 💻 Example C++ Code
+## Example C++ Code
 
 The following simple C++ program is used to generate LLVM remarks for this demo:
 
@@ -30,9 +30,9 @@ This will produce `example.opt.yaml`, which you can then parse and visualize.
 
 ---
 
-## 📷 Demo Preview
+##  Demo Preview
 
-### 🖼 Frontend UI Screenshot
+###  Frontend UI Screenshot
 
 The screenshot below shows the frontend UI rendering a demo remarks file with bar charts and a remark table:
 
@@ -41,7 +41,7 @@ The screenshot below shows the frontend UI rendering a demo remarks file with ba
 ---
 
 
-## 🔄 How It Works (Usage Guide)
+##  How It Works (Usage Guide)
 
 ### 1. Generate LLVM Optimization Remarks (YAML)
 
@@ -75,7 +75,7 @@ Then visit `http://localhost:8000/index.html` in your browser to see the visuali
 
 ---
 
-## 🗂 Project Structure
+##  Project Structure
 
 ```
 llvm-remarks-viewer-demo/
@@ -92,7 +92,7 @@ llvm-remarks-viewer-demo/
 
 ---
 
-## 📊 Remarks Visualization Flow
+##  Remarks Visualization Flow
 
 This diagram shows how the pieces connect:
 
@@ -100,7 +100,7 @@ This diagram shows how the pieces connect:
 
 ---
 
-## 🔍 Why These Fields Are Visualized
+##  Why These Fields Are Visualized
 
 LLVM’s `.opt.yaml` files include many low-level remarks. This tool extracts only the most relevant, actionable fields to help developers quickly interpret compiler decisions:
 
@@ -114,7 +114,7 @@ LLVM’s `.opt.yaml` files include many low-level remarks. This tool extracts on
 
 ---
 
-## 🧾 JSON Output Format
+##  JSON Output Format
 
 The `remarks.json` file contains simplified entries ready for UI rendering.  
 See `demo_remarks.json` as a reference.
@@ -132,7 +132,7 @@ Each entry includes:
 
 ---
 
-## 🚀 Future Improvements
+##  Future Improvements
 
 - Filtering and grouping by pass, type, or function
 - Inline source code integration
@@ -141,12 +141,12 @@ Each entry includes:
 
 ---
 
-## 📜 License
+##  License
 
 This project is licensed under the MIT License.
 
 ---
 
-## 🙋‍♀️ Author
+##  Author
 
 Created by [Le Li](https://github.com/leyli16) as part of a GSoC demo for the LLVM project.
