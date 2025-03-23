@@ -1,0 +1,5 @@
+*.o
+*.opt.yaml
+*.opt.json
+.DS_Store
+__pycache__/
