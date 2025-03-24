@@ -30,18 +30,43 @@ This will produce `example.opt.yaml`, which you can then parse and visualize.
 
 ---
 
-##  Demo Preview
 
-###  Frontend UI Screenshot
+## Demo Preview
 
-The screenshot below shows the frontend UI rendering a demo remarks file with bar charts and a remark table:
+### Frontend UI Screenshot
 
-![LLVM Remarks Viewer Screenshot](screenshot.png)
+This project also includes a custom frontend demo that renders remarks as charts and a summary table:
+
+![LLVM Remarks Viewer Screenshot](images/screenshot.png)
 
 ---
 
+### Tested with LLVM’s opt-viewer
 
-##  How It Works (Usage Guide)
+As a reference, I tested the official `opt-viewer` tool to understand its capabilities and limitations.
+
+####  Screenshot: opt-viewer Output
+
+Here is the result of running `opt-viewer.py` on the same LLVM `.opt.yaml` remark file:
+
+| Index Page | Source View |
+|------------|-------------|
+| ![opt-viewer Index Screenshot](images/opt-viewer-index.png) | ![opt-viewer Source Screenshot](images/opt-viewer-source.png) |
+
+This tool displays remarks in a tabular format with clickable source references and highlights inlined optimizations.  
+While very useful for source-level inspection, it doesn't provide aggregated views like charts or summaries.
+
+---
+
+## Remarks Visualization Flow
+
+This diagram shows how the pieces connect:
+
+![LLVM Remarks Flow](images/llvm_remarks_flow_updated.png)
+
+---
+
+## How It Works (Usage Guide)
 
 ### 1. Generate LLVM Optimization Remarks (YAML)
 
@@ -75,7 +100,7 @@ Then visit `http://localhost:8000/index.html` in your browser to see the visuali
 
 ---
 
-##  Project Structure
+## Project Structure
 
 ```
 llvm-remarks-viewer-demo/
@@ -85,22 +110,13 @@ llvm-remarks-viewer-demo/
 ├── remarks.json                 # Output JSON used by frontend
 ├── demo_remarks.json            # Static sample file for demo UI
 ├── index.html                   # HTML+JS frontend for visualization
-├── screenshot.png               # UI screenshot
-├── llvm_remarks_flow_updated.png # Architecture diagram
 └── README.md                    # Project documentation
 ```
 
 ---
 
-##  Remarks Visualization Flow
 
-This diagram shows how the pieces connect:
-
-![LLVM Remarks Flow](llvm_remarks_flow_updated.png)
-
----
-
-##  Why These Fields Are Visualized
+## Why These Fields Are Visualized
 
 LLVM’s `.opt.yaml` files include many low-level remarks. This tool extracts only the most relevant, actionable fields to help developers quickly interpret compiler decisions:
 
@@ -114,7 +130,7 @@ LLVM’s `.opt.yaml` files include many low-level remarks. This tool extracts on
 
 ---
 
-##  JSON Output Format
+## JSON Output Format
 
 The `remarks.json` file contains simplified entries ready for UI rendering.  
 See `demo_remarks.json` as a reference.
@@ -132,21 +148,26 @@ Each entry includes:
 
 ---
 
-##  Future Improvements
+## Future Plans
 
-- Filtering and grouping by pass, type, or function
-- Inline source code integration
-- Summary statistics (counts, top remarks)
-- Natural language (LLM-based) explanations
+Based on the opt-viewer comparison and aligned with the GSoC project goals, the following features are planned:
+
+- Add visualizations for hotness, remark frequency, or top impacted functions  
+- Highlight source-level locations similar to opt-viewer  
+- Add filters and sorting by pass, function, or remark type  
+- Support multiple input files and aggregate data across files or projects  
+- Integrate LLMs to explain common remarks or suggest optimizations  
+- Provide a CLI tool or compiler wrapper for easier remark generation and analysis  
+
 
 ---
 
-##  License
+## License
 
 This project is licensed under the MIT License.
 
 ---
 
-##  Author
+## Author
 
 Created by [Le Li](https://github.com/leyli16) as part of a GSoC demo for the LLVM project.
